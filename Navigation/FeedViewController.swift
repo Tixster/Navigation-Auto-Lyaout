@@ -12,6 +12,12 @@ final class FeedViewController: UIViewController {
     
     let post: Post = Post(title: "Пост")
     
+    private var verticalSctackView = UIStackView()
+    private var buttomOneSV = UIButton(type: .system)
+    private var buttomTwoSV = UIButton(type: .system)
+    
+    
+    
     override init(nibName nibNameOrNil: String?, bundle nibBundleOrNil: Bundle?) {
         super.init(nibName: nibNameOrNil, bundle: nibBundleOrNil)
         print(type(of: self), #function)
@@ -19,12 +25,15 @@ final class FeedViewController: UIViewController {
     
     required init?(coder: NSCoder) {
         super.init(coder: coder)
-        print(type(of: self), #function)
+
     }
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        print(type(of: self), #function)
+        view.addSubview(verticalSctackView)
+        setupStackView()
+
+
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -54,16 +63,46 @@ final class FeedViewController: UIViewController {
     
     override func viewDidLayoutSubviews() {
         super.viewDidLayoutSubviews()
-        print(type(of: self), #function)
     }
     
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        guard segue.identifier == "post" else {
-            return
-        }
-        guard let postViewController = segue.destination as? PostViewController else {
-            return
-        }
-        postViewController.post = post
+    func setupStackView(){
+        verticalSctackView.translatesAutoresizingMaskIntoConstraints = false
+        
+        verticalSctackView.centerXAnchor.constraint(equalTo: view.centerXAnchor).isActive = true
+        verticalSctackView.centerYAnchor.constraint(equalTo: view.centerYAnchor).isActive = true
+        
+        verticalSctackView.axis = .vertical
+        verticalSctackView.spacing = 10
+        verticalSctackView.distribution = .fillEqually
+        
+        verticalSctackView.addArrangedSubview(buttomOneSV)
+        verticalSctackView.addArrangedSubview(buttomTwoSV)
+        
+        setupButtomOne()
+        setupButtomTwo()
+
     }
+    
+    func setupButtomOne(){
+        buttomOneSV.setTitle("Кнопка 1", for: .normal)
+        buttomOneSV.backgroundColor = .blue
+        buttomOneSV.setTitleColor(.white, for: .normal)
+        buttomOneSV.addTarget(self, action: #selector(openPost), for: UIControl.Event.touchUpInside)
+
+    }
+    
+    func setupButtomTwo(){
+        buttomTwoSV.setTitle("Кнопка 2", for: .normal)
+        buttomTwoSV.backgroundColor = .darkGray
+        buttomTwoSV.setTitleColor(.white, for: .normal)
+        
+        buttomTwoSV.addTarget(self, action: #selector(openPost), for: UIControl.Event.touchUpInside)
+    }
+    
+    @objc private func openPost(){
+        performSegue(withIdentifier: "post", sender: self)
+        
+        
+    }
+
 }
