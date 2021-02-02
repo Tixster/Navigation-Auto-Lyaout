@@ -70,7 +70,6 @@ class ProfileHeaderView: UIView {
         }
     }
     
-    private var showStatusButton = UIButton(type: .system)
     
     
     
@@ -85,32 +84,13 @@ class ProfileHeaderView: UIView {
         super.init(coder: coder)
         
         
-        addSubview(showStatusButton)
-        setupStatusButton()
-        
-        
-    }
-    
-    
-    private func setupStatusButton(){
-        
-        showStatusButton.translatesAutoresizingMaskIntoConstraints = false
-        
-        NSLayoutConstraint.activate([
-            showStatusButton.bottomAnchor.constraint(equalTo: safeAreaLayoutGuide.bottomAnchor),
-            showStatusButton.leadingAnchor.constraint(equalTo: leadingAnchor),
-            showStatusButton.trailingAnchor.constraint(equalTo: trailingAnchor),
-            showStatusButton.heightAnchor.constraint(equalToConstant: 20)        
-        ])
 
         
         
-        showStatusButton.setTitle("Открыть статус", for: .normal)
-        showStatusButton.backgroundColor = .systemBlue
-        showStatusButton.setTitleColor(.white, for: .normal)
-        
     }
     
+    
+
     
     @objc private func buttonStatusTapped(){
         profileStatus.text = statusText
