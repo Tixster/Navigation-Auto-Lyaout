@@ -6,7 +6,7 @@
 //  Copyright © 2020 Artem Novichkov. All rights reserved.
 //
 
-struct Post {
+ struct Post {
     
     let title: String
 }
