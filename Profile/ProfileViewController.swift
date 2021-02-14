@@ -29,8 +29,6 @@ class ProfileViewController: UIViewController {
         PostProfile(autor: "Autor Three", image: "feedThree", likes: 453, views: 1203, description: "Описание 3"),
         PostProfile(autor: "Autor Four", image: "feedFour", likes: 33, views: 123, description: "Описание 4")
 
-
-
     ]
     
     override func viewDidLoad() {
@@ -55,10 +53,13 @@ class ProfileViewController: UIViewController {
                                forCellReuseIdentifier: String(describing: PostTableViewCell.self))
         feedTableView.register(ProfileTableHeaderView.self,
                                forHeaderFooterViewReuseIdentifier: String(describing: ProfileTableHeaderView.self))
+        feedTableView.register(PhotosTableViewCell.self, forCellReuseIdentifier: String(describing: PhotosTableViewCell.self))
+        
     }
     
     private func setupViews(){
         view.addSubview(feedTableView)
+        
         
         let constraints = [
             feedTableView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor),
@@ -75,17 +76,38 @@ class ProfileViewController: UIViewController {
 }
 
 extension ProfileViewController: UITableViewDataSource {
+    func numberOfSections(in tableView: UITableView) -> Int {
+        return 2
+    }
+    
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return posts.count
+        
+        switch section {
+        case 0:
+            return 1
+        default:
+            return posts.count
+
+        }
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell: PostTableViewCell = feedTableView.dequeueReusableCell(withIdentifier: String(describing: PostTableViewCell.self), for: indexPath) as! PostTableViewCell
+     
+        switch indexPath.section {
+        case 0:
+            let cell: PhotosTableViewCell = feedTableView.dequeueReusableCell(withIdentifier: String(describing: PhotosTableViewCell.self), for: indexPath) as! PhotosTableViewCell
+            
+            return cell
+            
+        default:
+            let cell: PostTableViewCell = feedTableView.dequeueReusableCell(withIdentifier: String(describing: PostTableViewCell.self), for: indexPath) as! PostTableViewCell
+            
+            cell.post = posts[indexPath.row]
+
+            return cell
+
+        }
         
-        cell.post = posts[indexPath.row]
-
-
-        return cell
     }
     
     
@@ -95,13 +117,32 @@ extension ProfileViewController: UITableViewDelegate{
     func tableView(_ tableView: UITableView, heightForFooterInSection section: Int) -> CGFloat {
         .zero
     }
-
     
+ 
     func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
         let headerView = feedTableView.dequeueReusableHeaderFooterView(withIdentifier: String(describing: ProfileTableHeaderView.self)) as! ProfileTableHeaderView
         
+        switch section {
+        case 0:
+            return headerView
+
+        default:
+            return nil
+        }
+    }
+    
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+      
+        switch indexPath.section {
+        case 0:
+            let photosViewController = PhotosViewController()
+            navigationController?.pushViewController(photosViewController, animated: true)
+            
+        default:
+            break
+        }
      
-        return headerView
+        
     }
 }
 
