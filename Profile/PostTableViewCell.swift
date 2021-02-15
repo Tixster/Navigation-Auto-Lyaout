@@ -122,8 +122,6 @@ class PostTableViewCell: UITableViewCell {
             imagePost.heightAnchor.constraint(equalTo: imagePost.widthAnchor),
             imagePost.trailingAnchor.constraint(equalTo: bgView.trailingAnchor, constant: 0),
             imagePost.leadingAnchor.constraint(equalTo: bgView.leadingAnchor, constant: 0),
-            
-            
         ]
         
         NSLayoutConstraint.activate(constraint)
@@ -131,7 +129,6 @@ class PostTableViewCell: UITableViewCell {
     }
     
 }
-
 
 extension UIView {
     func addSubviews(_ subviews: UIView...){

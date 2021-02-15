@@ -28,7 +28,6 @@ class ProfileViewController: UIViewController {
         PostProfile(autor: "Autor Two", image: "feedTwo", likes: 200, views: 250, description: "Описание 2"),
         PostProfile(autor: "Autor Three", image: "feedThree", likes: 453, views: 1203, description: "Описание 3"),
         PostProfile(autor: "Autor Four", image: "feedFour", likes: 33, views: 123, description: "Описание 4")
-
     ]
     
     override func viewDidLoad() {
@@ -42,8 +41,13 @@ class ProfileViewController: UIViewController {
     override func viewWillLayoutSubviews() {
         super.viewWillLayoutSubviews()
 
-        
             }
+    
+    override func viewWillDisappear(_ animated: Bool) {
+        super.viewWillDisappear(animated)
+        navigationController?.navigationBar.isHidden = false
+
+    }
     
     private func setupTableViews(){
         feedTableView.translatesAutoresizingMaskIntoConstraints = false
@@ -60,7 +64,6 @@ class ProfileViewController: UIViewController {
     private func setupViews(){
         view.addSubview(feedTableView)
         
-        
         let constraints = [
             feedTableView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor),
             feedTableView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor),
@@ -71,8 +74,6 @@ class ProfileViewController: UIViewController {
         NSLayoutConstraint.activate(constraints)
         
     }
-
-
 }
 
 extension ProfileViewController: UITableViewDataSource {
@@ -142,7 +143,6 @@ extension ProfileViewController: UITableViewDelegate{
             break
         }
      
-        
     }
 }
 
