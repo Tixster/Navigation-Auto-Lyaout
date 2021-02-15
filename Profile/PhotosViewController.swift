@@ -35,6 +35,12 @@ import UIKit
 
     }
     
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        navigationController?.navigationBar.isHidden = false
+
+    }
+    
     private func setupView(){
         view.addSubview(colletcionView)
         title = "Photo Gallery"
