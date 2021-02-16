@@ -8,7 +8,7 @@
 
 import UIKit
 
- struct PostProfile {
+struct PostProfile {
     var autor: String
     var image: String
     var likes: Int
@@ -19,8 +19,26 @@ import UIKit
 
 
 class ProfileViewController: UIViewController {
-
     
+    
+    private lazy var bgAvatarView: UIView = {
+        let bgAvatarView = UIView()
+        bgAvatarView.layer.opacity = 0
+        bgAvatarView.backgroundColor = .black
+        bgAvatarView.translatesAutoresizingMaskIntoConstraints = false
+        return bgAvatarView
+    }()
+    
+    private lazy var bgAvatarViewButton: UIButton = {
+        let bgAvatarViewButton = UIButton()
+        bgAvatarViewButton.setImage(#imageLiteral(resourceName: "cross"), for: .normal)
+        bgAvatarViewButton.backgroundColor = .white
+        bgAvatarViewButton.translatesAutoresizingMaskIntoConstraints = false
+        return bgAvatarViewButton
+    }()
+    
+    
+
     private var feedTableView = UITableView(frame: .zero, style: .grouped)
     
     private let posts = [
@@ -33,15 +51,32 @@ class ProfileViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         view.backgroundColor = .white
-        
+ 
         setupTableViews()
         setupViews()
         
     }
+    
+    @objc func tapImageVIew(){
+        let animator = UIViewPropertyAnimator(duration: 0.5, curve: .linear) {
+            let image = ProfileTableHeaderView().imageProfile
+
+            image.layoutIfNeeded()
+            image.translatesAutoresizingMaskIntoConstraints = true
+            image.frame = .init(x: self.view.frame.midX, y: self.view.frame.midY, width: self.view.frame.width, height: self.view.frame.width)
+            self.setupBgAvatarView()
+            self.bgAvatarView.layer.opacity = 0.5
+            image.setNeedsLayout()
+            
+        }
+        animator.startAnimation()
+    }
+    
+    
     override func viewWillLayoutSubviews() {
         super.viewWillLayoutSubviews()
-
-            }
+        
+    }
     
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
@@ -63,7 +98,7 @@ class ProfileViewController: UIViewController {
     
     private func setupViews(){
         view.addSubview(feedTableView)
-        
+
         let constraints = [
             feedTableView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor),
             feedTableView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor),
@@ -74,6 +109,33 @@ class ProfileViewController: UIViewController {
         NSLayoutConstraint.activate(constraints)
         
     }
+    
+    private func setupBgAvatarView(){
+        
+        view.addSubview(bgAvatarView)
+        setupBgAvatarViewButton()
+        let constraints = [
+            bgAvatarView.heightAnchor.constraint(equalTo: view.heightAnchor),
+            bgAvatarView.widthAnchor.constraint(equalTo: view.widthAnchor)
+        ]
+        
+        NSLayoutConstraint.activate(constraints)
+    }
+    
+    private func setupBgAvatarViewButton(){
+        
+        bgAvatarView.addSubview(bgAvatarViewButton)
+        let constraints = [
+            bgAvatarViewButton.topAnchor.constraint(equalTo: bgAvatarView.topAnchor, constant: 20),
+            bgAvatarViewButton.trailingAnchor.constraint(equalTo: bgAvatarView.trailingAnchor, constant:  -20),
+            bgAvatarViewButton.heightAnchor.constraint(equalToConstant: 20),
+            bgAvatarViewButton.widthAnchor.constraint(equalToConstant: 20),
+            
+        ]
+        
+        NSLayoutConstraint.activate(constraints)
+    }
+    
 }
 
 extension ProfileViewController: UITableViewDataSource {
@@ -88,12 +150,12 @@ extension ProfileViewController: UITableViewDataSource {
             return 1
         default:
             return posts.count
-
+            
         }
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-     
+        
         switch indexPath.section {
         case 0:
             let cell: PhotosTableViewCell = feedTableView.dequeueReusableCell(withIdentifier: String(describing: PhotosTableViewCell.self), for: indexPath) as! PhotosTableViewCell
@@ -104,9 +166,9 @@ extension ProfileViewController: UITableViewDataSource {
             let cell: PostTableViewCell = feedTableView.dequeueReusableCell(withIdentifier: String(describing: PostTableViewCell.self), for: indexPath) as! PostTableViewCell
             
             cell.post = posts[indexPath.row]
-
+            
             return cell
-
+            
         }
         
     }
@@ -114,26 +176,27 @@ extension ProfileViewController: UITableViewDataSource {
     
 }
 
+
 extension ProfileViewController: UITableViewDelegate{
     func tableView(_ tableView: UITableView, heightForFooterInSection section: Int) -> CGFloat {
         .zero
     }
     
- 
+    
     func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
         let headerView = feedTableView.dequeueReusableHeaderFooterView(withIdentifier: String(describing: ProfileTableHeaderView.self)) as! ProfileTableHeaderView
         
         switch section {
         case 0:
             return headerView
-
+            
         default:
             return nil
         }
     }
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-      
+        
         switch indexPath.section {
         case 0:
             let photosViewController = PhotosViewController()
@@ -142,7 +205,10 @@ extension ProfileViewController: UITableViewDelegate{
         default:
             break
         }
-     
+        
     }
+    
+    
+    
 }
 

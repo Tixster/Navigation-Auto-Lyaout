@@ -13,7 +13,8 @@ class ProfileTableHeaderView: UITableViewHeaderFooterView {
     
     private var bgView = UIView()
     
-    private var imageProfile: UIImageView = {
+    
+   var imageProfile: UIImageView = {
         let imageProfile = UIImageView()
         imageProfile.image = UIImage(named: "hipster cat")
         imageProfile.contentMode = .scaleAspectFill
@@ -21,6 +22,7 @@ class ProfileTableHeaderView: UITableViewHeaderFooterView {
         imageProfile.layer.cornerRadius = 80 / 2
         imageProfile.layer.borderWidth = 3
         imageProfile.layer.borderColor = UIColor.lightGray.cgColor
+        
         return imageProfile
     }()
     
@@ -105,12 +107,14 @@ class ProfileTableHeaderView: UITableViewHeaderFooterView {
         
         NSLayoutConstraint.activate(constraints)
         
-        
     }
     
     
     private func setupImageProfile(){
         imageProfile.translatesAutoresizingMaskIntoConstraints = false
+        
+        let tapImage = UITapGestureRecognizer(target: self, action: #selector(ProfileViewController().tapImageVIew))
+        imageProfile.addGestureRecognizer(tapImage)
         
         
         let constraints = [
@@ -124,6 +128,9 @@ class ProfileTableHeaderView: UITableViewHeaderFooterView {
         NSLayoutConstraint.activate(constraints)
     }
     
+ 
+
+  
     private func setupProfileName(){
         profileName.translatesAutoresizingMaskIntoConstraints = false
         
@@ -136,6 +143,7 @@ class ProfileTableHeaderView: UITableViewHeaderFooterView {
         
         NSLayoutConstraint.activate(constraints)
     }
+    
     
     private func setupProfileStatus(){
         profileStatus.translatesAutoresizingMaskIntoConstraints = false
@@ -180,8 +188,7 @@ class ProfileTableHeaderView: UITableViewHeaderFooterView {
         NSLayoutConstraint.activate(constraints)
     }
     
-    
-    
+
     
     
     
@@ -197,6 +204,8 @@ class ProfileTableHeaderView: UITableViewHeaderFooterView {
     override init(reuseIdentifier: String?) {
         super.init(reuseIdentifier: reuseIdentifier)
         setupBgView()
+
+
         
         
     }
