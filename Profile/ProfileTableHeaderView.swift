@@ -13,7 +13,6 @@ class ProfileTableHeaderView: UITableViewHeaderFooterView {
     
     private var bgView = UIView()
     
-    
    var imageProfile: UIImageView = {
         let imageProfile = UIImageView()
         imageProfile.image = UIImage(named: "hipster cat")
@@ -36,7 +35,6 @@ class ProfileTableHeaderView: UITableViewHeaderFooterView {
         
     }()
     
-    
     private var profileStatus: UILabel = {
         let profileStatus = UILabel()
         profileStatus.text = "Waiting for something..."
@@ -44,7 +42,6 @@ class ProfileTableHeaderView: UITableViewHeaderFooterView {
         profileStatus.font = UIFont.systemFont(ofSize: 14, weight: .regular)
         return profileStatus
     }()
-    
     
     private var textFieldStatus: UITextField = {
         let textFieldStatus = UITextField()
@@ -125,9 +122,7 @@ class ProfileTableHeaderView: UITableViewHeaderFooterView {
         NSLayoutConstraint.activate(constraints)
     }
     
- 
 
-  
     private func setupProfileName(){
         profileName.translatesAutoresizingMaskIntoConstraints = false
         
@@ -186,9 +181,6 @@ class ProfileTableHeaderView: UITableViewHeaderFooterView {
     }
     
 
-    
-    
-    
     @objc private func buttonStatusTapped(){
         profileStatus.text = statusText
         textFieldStatus.text = nil
@@ -201,14 +193,7 @@ class ProfileTableHeaderView: UITableViewHeaderFooterView {
     override init(reuseIdentifier: String?) {
         super.init(reuseIdentifier: reuseIdentifier)
         setupBgView()
-        let tapImage = UITapGestureRecognizer(target: self, action: #selector(ProfileViewController().tapImageVIew))
-        tapImage.numberOfTapsRequired = 1
-        imageProfile.addGestureRecognizer(tapImage)
-
-
-
-        
-        
+ 
     }
     
     required init?(coder: NSCoder) {

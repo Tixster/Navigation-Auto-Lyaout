@@ -8,7 +8,6 @@
 
 import UIKit
 
-
 struct PostProfile {
     var autor: String
     var image: String
@@ -16,8 +15,6 @@ struct PostProfile {
     var views: Int
     var description: String
 }
-
-
 
 class ProfileViewController: UIViewController {
     
@@ -31,16 +28,28 @@ class ProfileViewController: UIViewController {
         return bgAvatarView
     }()
     
+    private lazy var imageView: UIImageView = {
+         let imageView = UIImageView()
+        imageView.image = UIImage(named: "hipster cat")
+         imageView.contentMode = .scaleAspectFill
+         imageView.clipsToBounds = true
+         imageView.layer.cornerRadius = 80 / 2
+         imageView.layer.borderWidth = 3
+         imageView.layer.borderColor = UIColor.lightGray.cgColor
+        imageView.isUserInteractionEnabled = true
+         return imageView
+     }()
+    
     private lazy var bgAvatarViewButton: UIButton = {
         let bgAvatarViewButton = UIButton()
         bgAvatarViewButton.setImage(#imageLiteral(resourceName: "cross"), for: .normal)
         bgAvatarViewButton.backgroundColor = .white
+        bgAvatarViewButton.layer.opacity = 0
         bgAvatarViewButton.translatesAutoresizingMaskIntoConstraints = false
+        bgAvatarViewButton.addTarget(self, action: #selector(tapAvararVIewButton), for: .touchUpInside)
         return bgAvatarViewButton
     }()
     
-    
-
     private var feedTableView = UITableView(frame: .zero, style: .grouped)
     
     private let posts = [
@@ -55,47 +64,81 @@ class ProfileViewController: UIViewController {
         view.backgroundColor = .white
         setupTableViews()
         setupViews()
-        
+    }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        navigationController?.navigationBar.isHidden = true
     }
 
-    
-    @objc func tapImageVIew(){
-        let imageView: UIImageView = {
-             let imageView = UIImageView()
-            imageView.image = UIImage(named: "hipster cat")
-             imageView.contentMode = .scaleAspectFill
-             imageView.clipsToBounds = true
-             imageView.layer.cornerRadius = 80 / 2
-             imageView.layer.borderWidth = 3
-             imageView.layer.borderColor = UIColor.lightGray.cgColor
-            imageView.isUserInteractionEnabled = true
-             return imageView
-         }()
+    // MARK: - Анимация
+    @objc private func tapAvararVIewButton(){
+        guard self.imageView.center == self.view.center  else { return }
+        let animator = UIViewPropertyAnimator(duration: 0.5, curve: .linear) {
+
+            self.imageView.frame = .init(x: self.view.frame.minX + 16, y: self.view.frame.minY + 35, width: 80, height: 80)
+            self.imageView.layer.cornerRadius = 80 / 2
+            self.imageView.layer.borderWidth = 3
+            self.bgAvatarView.layer.opacity = 0
+ 
+        }
         
+        animator.addCompletion {position in
+            switch position {
+            case .end:
+                self.bgAvatarView.removeFromSuperview()
+                self.imageView.removeFromSuperview()
+                self.bgAvatarViewButton.removeFromSuperview()
+                
+            case .start:
+                return
+            case .current:
+                return
+            @unknown default:
+                return
+            }
+        }
+
+        animator.startAnimation()
+        
+        let animatorButton = UIViewPropertyAnimator(duration: 0.3, curve: .linear) {
+            self.bgAvatarViewButton.layer.opacity = 0
+
+        }
+        animatorButton.startAnimation()
+
+    }
+    @objc func tapImageVIew(){
+ 
         self.setupBgAvatarView()
         self.view.addSubview(imageView)
-        imageView.frame = .init(x: self.view.frame.minX + 16, y: self.view.frame.minY + 16, width: 80, height: 80)
 
         let animator = UIViewPropertyAnimator(duration: 0.5, curve: .linear) {
 
-            imageView.frame = .init(x: self.view.frame.midX, y: self.view.frame.midY, width: self.view.frame.width, height: self.view.frame.width)
-            self.bgAvatarView.layer.opacity = 0.5
-            self.view.layoutIfNeeded()
+            self.imageView.frame = .init(x: self.view.frame.minX + 16, y: self.view.frame.minY + 35, width: self.view.frame.width, height: self.view.frame.width)
+            self.imageView.center = self.view.center
+            self.imageView.layer.cornerRadius = 0
+            self.imageView.layer.borderWidth = 0
+            self.bgAvatarView.layer.opacity = 0.8
+        }
+        
+        animator.startAnimation()
+        
+        let animatorButton = UIViewPropertyAnimator(duration: 0.3, curve: .linear) {
+            self.bgAvatarViewButton.layer.opacity = 1
 
         }
-        animator.startAnimation()
+        animatorButton.startAnimation()
     }
     
+    // MARK: - Настройки
     
     override func viewWillLayoutSubviews() {
         super.viewWillLayoutSubviews()
-        
     }
     
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
         navigationController?.navigationBar.isHidden = false
-        
     }
     
     private func setupTableViews(){
@@ -107,7 +150,6 @@ class ProfileViewController: UIViewController {
         feedTableView.register(ProfileTableHeaderView.self,
                                forHeaderFooterViewReuseIdentifier: String(describing: ProfileTableHeaderView.self))
         feedTableView.register(PhotosTableViewCell.self, forCellReuseIdentifier: String(describing: PhotosTableViewCell.self))
-        
     }
     
     private func setupViews(){
@@ -121,7 +163,6 @@ class ProfileViewController: UIViewController {
         ]
         
         NSLayoutConstraint.activate(constraints)
-        
     }
     
     private func setupBgAvatarView(){
@@ -149,6 +190,7 @@ class ProfileViewController: UIViewController {
         
         NSLayoutConstraint.activate(constraints)
     }
+    
     
 }
 
@@ -199,6 +241,9 @@ extension ProfileViewController: UITableViewDelegate{
     
     func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
         let headerView = feedTableView.dequeueReusableHeaderFooterView(withIdentifier: String(describing: ProfileTableHeaderView.self)) as! ProfileTableHeaderView
+        
+        let tapImage = UITapGestureRecognizer(target: self, action: #selector(self.tapImageVIew))
+        headerView.imageProfile.addGestureRecognizer(tapImage)
         
         switch section {
         case 0:
