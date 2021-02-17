@@ -22,7 +22,8 @@ class ProfileTableHeaderView: UITableViewHeaderFooterView {
         imageProfile.layer.cornerRadius = 80 / 2
         imageProfile.layer.borderWidth = 3
         imageProfile.layer.borderColor = UIColor.lightGray.cgColor
-        
+        imageProfile.isUserInteractionEnabled = true
+ 
         return imageProfile
     }()
     
@@ -112,11 +113,7 @@ class ProfileTableHeaderView: UITableViewHeaderFooterView {
     
     private func setupImageProfile(){
         imageProfile.translatesAutoresizingMaskIntoConstraints = false
-        
-        let tapImage = UITapGestureRecognizer(target: self, action: #selector(ProfileViewController().tapImageVIew))
-        imageProfile.addGestureRecognizer(tapImage)
-        
-        
+            
         let constraints = [
             imageProfile.topAnchor.constraint(equalTo: bgView.topAnchor, constant: 16),
             imageProfile.leadingAnchor.constraint(equalTo: bgView.leadingAnchor, constant: 16),
@@ -204,6 +201,10 @@ class ProfileTableHeaderView: UITableViewHeaderFooterView {
     override init(reuseIdentifier: String?) {
         super.init(reuseIdentifier: reuseIdentifier)
         setupBgView()
+        let tapImage = UITapGestureRecognizer(target: self, action: #selector(ProfileViewController().tapImageVIew))
+        tapImage.numberOfTapsRequired = 1
+        imageProfile.addGestureRecognizer(tapImage)
+
 
 
         

@@ -8,6 +8,7 @@
 
 import UIKit
 
+
 struct PostProfile {
     var autor: String
     var image: String
@@ -20,7 +21,8 @@ struct PostProfile {
 
 class ProfileViewController: UIViewController {
     
-    
+    let image = ProfileTableHeaderView().imageProfile
+
     private lazy var bgAvatarView: UIView = {
         let bgAvatarView = UIView()
         bgAvatarView.layer.opacity = 0
@@ -51,23 +53,35 @@ class ProfileViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         view.backgroundColor = .white
- 
         setupTableViews()
         setupViews()
         
     }
+
     
     @objc func tapImageVIew(){
-        let animator = UIViewPropertyAnimator(duration: 0.5, curve: .linear) {
-            let image = ProfileTableHeaderView().imageProfile
+        let imageView: UIImageView = {
+             let imageView = UIImageView()
+            imageView.image = UIImage(named: "hipster cat")
+             imageView.contentMode = .scaleAspectFill
+             imageView.clipsToBounds = true
+             imageView.layer.cornerRadius = 80 / 2
+             imageView.layer.borderWidth = 3
+             imageView.layer.borderColor = UIColor.lightGray.cgColor
+            imageView.isUserInteractionEnabled = true
+             return imageView
+         }()
+        
+        self.setupBgAvatarView()
+        self.view.addSubview(imageView)
+        imageView.frame = .init(x: self.view.frame.minX + 16, y: self.view.frame.minY + 16, width: 80, height: 80)
 
-            image.layoutIfNeeded()
-            image.translatesAutoresizingMaskIntoConstraints = true
-            image.frame = .init(x: self.view.frame.midX, y: self.view.frame.midY, width: self.view.frame.width, height: self.view.frame.width)
-            self.setupBgAvatarView()
+        let animator = UIViewPropertyAnimator(duration: 0.5, curve: .linear) {
+
+            imageView.frame = .init(x: self.view.frame.midX, y: self.view.frame.midY, width: self.view.frame.width, height: self.view.frame.width)
             self.bgAvatarView.layer.opacity = 0.5
-            image.setNeedsLayout()
-            
+            self.view.layoutIfNeeded()
+
         }
         animator.startAnimation()
     }
