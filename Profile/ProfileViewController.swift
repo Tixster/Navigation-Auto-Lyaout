@@ -81,6 +81,13 @@ class ProfileViewController: UIViewController {
             self.bgAvatarView.layer.opacity = 0
  
         }
+        animator.startAnimation()
+        
+        let animatorButton = UIViewPropertyAnimator(duration: 0.3, curve: .linear) {
+            self.bgAvatarViewButton.layer.opacity = 0
+
+        }
+        animatorButton.startAnimation()
         
         animator.addCompletion {position in
             switch position {
@@ -98,13 +105,7 @@ class ProfileViewController: UIViewController {
             }
         }
 
-        animator.startAnimation()
-        
-        let animatorButton = UIViewPropertyAnimator(duration: 0.3, curve: .linear) {
-            self.bgAvatarViewButton.layer.opacity = 0
 
-        }
-        animatorButton.startAnimation()
 
     }
     @objc func tapImageVIew(){
@@ -121,13 +122,28 @@ class ProfileViewController: UIViewController {
             self.bgAvatarView.layer.opacity = 0.8
         }
         
-        animator.startAnimation()
-        
         let animatorButton = UIViewPropertyAnimator(duration: 0.3, curve: .linear) {
             self.bgAvatarViewButton.layer.opacity = 1
 
         }
-        animatorButton.startAnimation()
+        
+        animator.addCompletion { position in
+            switch position {
+            
+            case .end:
+                animatorButton.startAnimation()
+            case .start:
+                return
+            case .current:
+                return
+            @unknown default:
+                return
+            }
+        }
+        
+        animator.startAnimation()
+        
+
     }
     
     // MARK: - Настройки
@@ -216,6 +232,7 @@ extension ProfileViewController: UITableViewDataSource {
         case 0:
             let cell: PhotosTableViewCell = feedTableView.dequeueReusableCell(withIdentifier: String(describing: PhotosTableViewCell.self), for: indexPath) as! PhotosTableViewCell
             
+
             return cell
             
         default:

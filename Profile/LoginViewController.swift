@@ -66,8 +66,6 @@ class LoginViewController: UIViewController {
             contetnView.widthAnchor.constraint(equalTo: scrollView.widthAnchor),
             contetnView.leadingAnchor.constraint(equalTo: scrollView.leadingAnchor),
             contetnView.trailingAnchor.constraint(equalTo: scrollView.trailingAnchor),
-          
-            
         ]
     
         NSLayoutConstraint.activate(constraints)

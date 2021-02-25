@@ -100,10 +100,10 @@
 				3EE235C625B6F912004151BF /* ProfileViewController.swift */,
 				3E81D7C225CB32D400C1AAAB /* PostTableViewCell.swift */,
 				3EE5000125D9709700BD8B01 /* PhotosTableViewCell.swift */,
-				3E8FC9E625C8B42900302A64 /* LoginViewController.swift */,
 				3E2F9BCD25D9AED200CEFD57 /* PhotosViewController.swift */,
-				3E900DE725DA942E0002E1CE /* PhotosStorage.swift */,
 				3E900DEA25DA99DF0002E1CE /* PhotosCollectionViewCell.swift */,
+				3E900DE725DA942E0002E1CE /* PhotosStorage.swift */,
+				3E8FC9E625C8B42900302A64 /* LoginViewController.swift */,
 			);
 			path = Profile;
 			sourceTree = "<group>";
@@ -339,7 +339,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_STYLE = Automatic;
-				DEVELOPMENT_TEAM = 79RZ866842;
+				DEVELOPMENT_TEAM = 7MH8KA7J8V;
 				INFOPLIST_FILE = Navigation/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
@@ -357,7 +357,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_STYLE = Automatic;
-				DEVELOPMENT_TEAM = 79RZ866842;
+				DEVELOPMENT_TEAM = 7MH8KA7J8V;
 				INFOPLIST_FILE = Navigation/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
